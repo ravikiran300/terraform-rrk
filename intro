@@ -1,5 +1,6 @@
 terraform is used to automatic infrastructure(servers,vms,k8)
-its is decerative
+its is decerative (it mean we are  defining how infra should deploy)(example: suppose if we want to 5 server deployed and next u told 2 server to deploy . 
+here u no need to tell to delete 3 server. terraform is intelligent to do that to automate
 
 terrafrorm and anisable for infra provision
 terrafrom is mainly used for infrastruce provising
@@ -10,4 +11,8 @@ tf file - config.whatever create.
 my current state of setup,
 current state and desried state it will check
 
+do terrafrom refresh - to know current state
+plan - planing execution,preview. if we get desried state how it will be
+apply- execute that plan
+destroy- remove everything
 
