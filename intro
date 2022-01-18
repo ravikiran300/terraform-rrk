@@ -16,3 +16,14 @@ plan - planing execution,preview. if we get desried state how it will be
 apply- execute that plan
 destroy- remove everything
 
+
+
+==================
+
+Regions is cluster of DC
+
+availablity zone - us-west 1
+                    us -
+                    
+edge locations are to maintain low latency
+
