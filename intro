@@ -1,0 +1,9 @@
+terraform is used to automatic infrastructure(servers,vms,k8)
+its is decerative
+
+terrafrorm and anisable for infra provision
+terrafrom is mainly used for infrastruce provising
+some application can also be deployed using terraform example docker deploy using terraform,middleware application cannot be in deployed
+ansiable configuration tool infraconfig,install software,deploy application
+
+
