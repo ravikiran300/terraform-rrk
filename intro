@@ -6,4 +6,8 @@ terrafrom is mainly used for infrastruce provising
 some application can also be deployed using terraform example docker deploy using terraform,middleware application cannot be in deployed
 ansiable configuration tool infraconfig,install software,deploy application
 
+tf file - config.whatever create.
+my current state of setup,
+current state and desried state it will check
+
 
