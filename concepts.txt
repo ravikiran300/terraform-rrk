@@ -35,6 +35,24 @@ variable "enable_public_ip" {
 =============
 
 
+A variables.tf file is used to define the variables type and optionally set a default value.
+A terraform. tfvars file is used to set the actual values of the variables. 
+
+Now create variable.tf but without any default values
+variable "instance_type" {
+}
+
+Finally create terraform.tfvars
+instance_type="t2.micro"
+
+
+terraform plan -var-file="stage.tfvars"
+terraform plan -var="instance_type=t2.micro"
+
+
+=========================
+
+
 3. Terraform Variables - list, set, map
 
 list 
@@ -72,9 +90,56 @@ Terraform also supports the map variable type where you can define the key-valye
   }
 }
 
+=========================
+
+Terraform locals are quite similar to Terraform variables but Terraform locals do not change their value. 
+
+On the other hand, if you talk about Terraform input variables then it is dependent on user input and it can change its value
+
+So if you have a very large Terraform file where you need to use the same values or expressions multiple times then Terraform local can be useful for you.
 
 
 
+
+provider "aws" {
+   region     = "eu-central-1"
+   access_key = "AKIATQ37NXB2G2LXXXXX"
+   secret_key = "r1oaShokKPw+YY7qaHxj8mD2T8BpxRUVXXXXXXXX"
+}
+
+locals {
+  staging_env = "staging"
+}
+
+resource "aws_vpc" "staging-vpc" {
+  cidr_block = "10.5.0.0/16"
+
+  tags = {
+    Name = "${local.staging_env}-vpc-tag"
+  }
+}
+
+resource "aws_subnet" "staging-subnet" {
+  vpc_id = aws_vpc.staging-vpc.id
+  cidr_block = "10.5.0.0/16"
+
+  tags = {
+    Name = "${local.staging_env}-subnet-tag"
+  }
+}
+
+resource "aws_instance" "ec2_example" {
+   
+   ami           = "ami-0767046d1677be5a0"
+   instance_type = "t2.micro"
+   subnet_id = aws_subnet.staging-subnet.id
+   
+   tags = {
+           Name = "${local.staging_env} - Terraform EC2"
+   }
+}
+
+ 
 
 
 
