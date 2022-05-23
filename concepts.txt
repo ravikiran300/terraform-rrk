@@ -1,0 +1,83 @@
+As the name suggests Simple Values variables are which hold only a single value. Here the types of Simple Value variables -
+
+    string:
+    
+ variable "instance_type" {
+   description = "Instance type t2.micro"
+   type        =  string
+   default     = "t2.micro"
+}   
+
+   instance_type =  var.instance_type
+    
+    
+    ====
+    number
+    
+  variable "instance_count" {
+  description = "EC2 instance count"
+  type        = number
+  default     = 2
+} 
+  
+  
+    
+    bool
+
+variable "enable_public_ip" {
+  description = "Enable public IP address"
+  type        = bool
+  default     = true
+}
+
+
+
+=============
+
+
+3. Terraform Variables - list, set, map
+
+list 
+As the name suggests we are going to define a list that will contain more than one element in it.
+
+variable "user_names" {
+  description = "IAM usernames"
+  type        = list(string)
+  default     = ["user1", "user2", "user3s"]
+}
+
+resource "aws_iam_user" "example" {
+  count = length(var.user_names)
+  name  = var.user_names[count.index]
+}
+
+variable "user_names" {
+  description = "IAM usernames"
+  type        = list(string)
+  default     = ["user1", "user2", "user3s"]
+}
+
+
+
+ Map variable type
+
+Terraform also supports the map variable type where you can define the key-valye pair.
+
+ variable "project_environment" {
+  description = "project name and environment"
+  type        = map(string)
+  default     = {
+    project     = "project-alpha",
+    environment = "dev"
+  }
+}
+
+
+
+
+
+
+
+
+
+
