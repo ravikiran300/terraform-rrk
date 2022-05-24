@@ -19,8 +19,81 @@ output "my_console_output" {
 
 Terraform Dynamic blocks:
 
+If we describe terraform dynamic block in simple words then it is for loop which is going to iterate over and will help you to create a dynamic resource. With the help of dynamic blocks you can create nested repeatable blocks such as settings, ingress rules etc…
+
+its contains
+
+
+    Collections - You need to have collections .e.g. - list, map, set
+    Iterator - To create a dynamic block you need to define an iterator.
+    Content - Content is something onto which you wanna iterate.
+    
+  example : 
+  
+  locals {
+   ingress_rules = [{
+      port        = 443
+      description = "Ingress rules for port 443"
+   },
+   {
+      port        = 80
+      description = "Ingree rules for port 80"
+   }]
+}
+
+resource "aws_security_group" "main" {
+   name   = "resource_with_dynamic_block"
+   vpc_id = data.aws_vpc.main.id
+
+   dynamic "ingress" {
+      for_each = local.ingress_rules
+
+      content {
+         description = ingress.value.description
+         from_port   = ingress.value.port
+         to_port     = ingress.value.port
+         protocol    = "tcp"
+         cidr_blocks = ["0.0.0.0/0"]
+      }
+   }
+
+   tags = {
+      Name = "AWS security group dynamic block"
+   }
+}
 
 
 
+=====================
+
+provider
+
+This meta argument is one of my favorite because it lets you override Terraform’s default behavior. It can help you to create multiple configurations for a single cloud service provider (.e.g - AWS, GCP).
 
 
+One simple example would be - “Suppose you want to create two aws_instance one in eu-central-1 and another one in eu-nort-1 region, would it be possible for you to create in single main.tf file?”
+
+Well, YES you can do that but to achieve this you need to use provider inside your terraform file along with the alias.
+
+
+=====
+
+metaarguments:
+
+
+    count
+    for_each
+    provider
+    lifecycle
+
+4. lifecycle
+
+This meta argument is a lifesaver if you are working in the production environment where you have to be very careful so that you do not accidentally destroy any resource.
+
+With lifecyle meta tag you can make sure that certain resources should not be deleted and you can also create a new similar resource after the terraform destroy command.
+
+There are three arguments which you can pass inside the lifecycle block -
+
+    create_before_destroy - Once you set this argument the resource will be created once again after you issue the terraform destroy command
+    prevent_destroy - It prevents from destroying your terraform resource, once you set this terraform argument then the resource can not be destroyed
+    ignore_changes - Suppose you have manually made some changes on aws or GCP but you want to prevent those changes to be saved inside your terraform terraform.tfstate file then you can use ignore_changes arguments.
